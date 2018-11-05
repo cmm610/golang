@@ -20,6 +20,10 @@ func (m Mismatch) Error() string {
 	return "c"
 }
 
+func doAppend(&Node node, c) {
+
+}
+
 func Build(records []Record) (*Node, error) {
 	if len(records) == 0 {
 		return nil, nil
@@ -47,46 +51,48 @@ func Build(records []Record) (*Node, error) {
 		newTodo := []*Node(nil)
 		for _, c := range todo {
 			for _, r := range records {
-				if r.Parent == c.ID {
-					if r.ID < c.ID {
-						return nil, errors.New("a")
-					} else if r.ID == c.ID {
-						if r.ID != 0 {
-							return nil, fmt.Errorf("b")
+				if r.Parent != c.ID {
+					continue
+				}
+				if r.ID < c.ID {
+					return nil, errors.New("a")
+				} else if r.ID == c.ID {
+					if r.ID != 0 {
+						return nil, fmt.Errorf("b")
+					}
+				} else {
+					n++
+					switch len(c.Children) {
+					case 0:
+						nn := &Node{ID: r.ID}
+						doAppend()
+						c.Children = []*Node{nn}
+						newTodo = append(newTodo, nn)
+					case 1:
+						nn := &Node{ID: r.ID}
+						if c.Children[0].ID < r.ID {
+							c.Children = []*Node{c.Children[0], nn}
+							newTodo = append(newTodo, nn)
+						} else {
+							c.Children = []*Node{nn, c.Children[0]}
+							newTodo = append(newTodo, nn)
 						}
-					} else {
-						n++
-						switch len(c.Children) {
-						case 0:
-							nn := &Node{ID: r.ID}
-							c.Children = []*Node{nn}
-							newTodo = append(newTodo, nn)
-						case 1:
-							nn := &Node{ID: r.ID}
-							if c.Children[0].ID < r.ID {
-								c.Children = []*Node{c.Children[0], nn}
-								newTodo = append(newTodo, nn)
-							} else {
-								c.Children = []*Node{nn, c.Children[0]}
-								newTodo = append(newTodo, nn)
-							}
-						default:
-							nn := &Node{ID: r.ID}
-							newTodo = append(newTodo, nn)
-						breakpoint:
-							for range []bool{false} {
-								for i, cc := range c.Children {
-									if cc.ID > r.ID {
-										a := make([]*Node, len(c.Children)+1)
-										copy(a, c.Children[:i])
-										copy(a[i+1:], c.Children[i:])
-										copy(a[i:i+1], []*Node{nn})
-										c.Children = a
-										break breakpoint
-									}
+					default:
+						nn := &Node{ID: r.ID}
+						newTodo = append(newTodo, nn)
+					breakpoint:
+						for range []bool{false} {
+							for i, cc := range c.Children {
+								if cc.ID > r.ID {
+									a := make([]*Node, len(c.Children)+1)
+									copy(a, c.Children[:i])
+									copy(a[i+1:], c.Children[i:])
+									copy(a[i:i+1], []*Node{nn})
+									c.Children = a
+									break breakpoint
 								}
-								c.Children = append(c.Children, nn)
 							}
+							c.Children = append(c.Children, nn)
 						}
 					}
 				}
