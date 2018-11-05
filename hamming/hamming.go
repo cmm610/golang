@@ -11,7 +11,6 @@ func Distance(a, b string) (int, error) {
 	l := 0
 
 	if len(sta) == len(stb) {
-		l = 0
 		for i, c := range sta {
 			if c != stb[i] {
 				l ++

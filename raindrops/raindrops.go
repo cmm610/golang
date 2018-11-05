@@ -8,6 +8,7 @@ import (
 func Convert(i int) string {
 	f := float64(i)
 	ret := ""
+
 	if math.Mod(f, 3) == 0 {
 		ret += "Pling"
 	}
