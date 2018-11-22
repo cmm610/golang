@@ -5,12 +5,7 @@ import (
 )
 
 func AddGigasecond(t time.Time) time.Time {
-	gs := time.Duration(1000000000 * time.Second)
+	gs := time.Duration(1e9 * time.Second)
 	t = t.Add(gs)
 	return t
 }
-
-
-//func main() {
-//	AddGigasecond(time.Now())
-//}
