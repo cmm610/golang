@@ -1,27 +1,43 @@
 package bob
 
 import (
-	"regexp"
 	"strings"
+	"unicode"
 )
+
+type Remark struct {
+	remark string
+}
+
+func (r Remark) isQuestion() bool {
+	return strings.HasSuffix(r.remark, "?")
+}
+
+func newRemark(remark string) Remark {
+	return Remark{strings.TrimSpace(remark)}
+}
+
+func (r Remark) isShouting() bool {
+	hasLetters := strings.IndexFunc(r.remark, unicode.IsLetter) >= 0
+	isUpperCase := strings.ToUpper(r.remark) == r.remark
+
+	return isUpperCase && hasLetters
+}
 
 // build Bob's response off of a remark
 func Hey(remark string) string {
-	remark = strings.Replace(remark, " ", "", 44)
-	bs := []byte (remark)
-	c, _ := regexp.Match("[A-Z]{4}", bs)
-	q, _ := regexp.Match("\\?$", bs)
-	n, _ := regexp.Match("[1-9]", bs)
-	e, _ := regexp.Match("\\!", bs)
-	as, _ := regexp.Match("\\t", bs)
-	if c && q {
+	r := newRemark(remark)
+
+	switch true {
+	case r.isQuestion() && r.isShouting():
 		return "Calm down, I know what I'm doing!"
-	} else if n&&q  || q {
+	case r.isQuestion() :
 		return "Sure."
-	} else if n&&e  || c {
+	case r.isShouting() :
 		return "Whoa, chill out!"
-	} else if remark == "" ||  as {
+	case r.remark == "":
 		return "Fine. Be that way!"
+	default :
+		return "Whatever."
 	}
-	return "Whatever."
 }
