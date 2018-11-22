@@ -6,9 +6,8 @@
 package twofer
 
 // ShareWith should have a comment documenting it.
-func ShareWith(n string) string {
-	name := n
-	if n == "" {
+func ShareWith(name string) string {
+	if name == "" {
 		name = "you"
 	}
 	return "One for " + name + ", one for me."

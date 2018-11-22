@@ -4,13 +4,12 @@ import (
 	"strings"
 )
 
-// Abbreviate should have a comment documenting it.
 func Abbreviate(s string) string {
-	r := strings.Replace(s, "-", " ", 40)
-	arr := strings.Split(r, " ")
+	r := strings.Replace(s, "-", " ", -1)
+	sa := strings.Fields(r)
 	ret := ""
-	for i := 0; i < len(arr); i++ {
-		ret += strings.ToUpper(arr[i][0:1])
+	for _, word := range sa {
+		ret += strings.ToUpper(string(word[0]))
 	}
 
 	return ret

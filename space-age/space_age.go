@@ -1,9 +1,9 @@
 package space
 
 type Planet string
-
+var secondsInOneEarthYear = 31557600.0
 func Age(s float64, p Planet) float64 {
-	m := map[string]float64{
+	m := map[Planet]float64{
 		"Earth": 1.00,
 		"Mercury": .2408467,
 		"Venus": 0.61519726,
@@ -14,6 +14,6 @@ func Age(s float64, p Planet) float64 {
 		"Neptune": 164.79132,
 	}
 
-	age := s / (m[string(p)] * 31557600)
+	age := s / (m[p] * secondsInOneEarthYear)
 	return age
 }
