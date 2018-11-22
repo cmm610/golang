@@ -1,25 +1,34 @@
+//Package raindrops takes an integer value and "translates" it to a particular raindrop sound by determining the integer's prime factorization.
+
 package raindrops
 
 import (
-	"math"
 	"strconv"
 )
 
-func Convert(i int) string {
-	f := float64(i)
-	ret := ""
+const testVersion = 2
 
-	if math.Mod(f, 3) == 0 {
-		ret += "Pling"
+var translations = []struct {
+	Num  int
+	Word string
+}{
+	{3, "Pling"},
+	{5, "Plang"},
+	{7, "Plong"},
+}
+
+func Convert(amount int) string {
+	s := ""
+
+	for _, trans := range translations {
+		if amount%trans.Num == 0 {
+			s += trans.Word
+		}
 	}
-	if math.Mod(f, 5) == 0 {
-		ret += "Plang"
+
+	if s == "" {
+		s = strconv.Itoa(amount)
 	}
-	if math.Mod(f, 7) == 0 {
-		ret += "Plong"
-	}
-	if ret == "" {
-		ret = strconv.Itoa(i)
-	}
-	return ret
+
+	return s
 }
