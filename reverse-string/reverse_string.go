@@ -1,25 +1,16 @@
 package reverse
 
 import (
-	"strings"
+	"bytes"
 )
 
 func String(s string) string {
-	ss := strings.Split(s, "")
-	l := len(ss)
-	mod := int(l/2)
-	retArr := make([]string, l)
-	key := 0
-	for i, runeVal := range s {
+	var output bytes.Buffer
 
+	runes := []rune(s)
+	for i := range runes {
+		output.WriteRune(runes[len(runes) - 1 - i])
 	}
-	for i := 0; i<mod; i++ {
-		key = l - 1 - i
-		retArr[i] = ss[key]
-		retArr[key] = ss[i]
-		if i == mod - 1 {
-			retArr[i+1] = ss[i+1]
-		}
-	}
-	return strings.Join(retArr, "")
+
+	return output.String()
 }
